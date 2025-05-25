@@ -1,0 +1,6 @@
+---
+- hosts: routers
+  become: yes
+
+  tasks:
+    - name: disable port-security on all interfaces
