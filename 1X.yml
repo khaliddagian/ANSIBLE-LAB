@@ -1,6 +1,48 @@
 ---
-- hosts: routers
-  become: yes
+- name: Remove port-security and automate 802.1X
+  hosts: MS1
+  gather_facts: no
+
+  vars:
+    ports: "{{ range(1,53) | list }}" #G1/0/1 - G1/0/52
 
   tasks:
-    - name: disable port-security on all interfaces
+    - name: Remove port-security
+      cisco.ios.ios_config:
+        lines:
+          - no switchport port-security
+          - no switchport port-security violation
+        parents: "interface GigabitEthernet1/0/{{ port_number }}"
+      loop: "{{ ports }}"
+      loop_control:
+        loop_var: port_number
+
+    - name: Configure Global AAA and 802.1X settings
+      cisco.ios.ios_config:
+        lines:
+          - aaa new-model
+          - aaa authentication login default group radius local
+          - aaa authentication dot1x default group radius
+          - aaa authorization network default group radius
+          - dot1x system-auth-control
+
+    - name: Configure interface GigabitEthernet1/0/2 for 802.1X
+      cisco.ios.ios_config:
+        lines:
+          - switchport mode access
+          - authentication port-control auto
+          - dot1x pae authenticator
+          - spanning-tree portfast
+        parents: interface GigabitEthernet1/0/2
+
+    #- name: Set RADIUS server attribute direction
+      #cisco.ios.ios_config:
+        #lines:
+          #- radius-server attribute 11 default direction in
+
+    - name: Configure RADIUS server details
+      cisco.ios.ios_config:
+        lines:
+          - address ipv4 11.1.1.100 auth-port 1812 acct-port 1813
+          - key Password1
+          - parents: radius server default

@@ -1,0 +1,12 @@
+---
+- name: Enable spanning-tree portfast on Fa0/2
+  hosts: MS1
+  gather_facts: no
+  connection: network_cli
+
+  tasks:
+    - name: Configure spanning-tree porfast on FastEthernet0/2
+      cisco.ios.ios_config:
+        lines:
+          - spanning-tree portfast
+        parents: interface FastEthernet0/2
