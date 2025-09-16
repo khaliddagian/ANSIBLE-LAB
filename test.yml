@@ -1,12 +1,40 @@
 ---
-- name: Enable spanning-tree portfast on Fa0/2
-  hosts: MS1
+- name: Configure interface GigabitEthernet0/6-11 for 802.1X
+  hosts: Second-Switch
   gather_facts: no
-  connection: network_cli
+
+  vars:
+    ports: "{{ range(6,12) | list }}" #G0/6 - G0/11
 
   tasks:
-    - name: Configure spanning-tree porfast on FastEthernet0/2
+    - name: Configure interface GigabitEthernet0/6-11 for 802.1X
       cisco.ios.ios_config:
         lines:
+          - switchport mode access
+          - authentication port-control auto
+          - dot1x pae authenticator
           - spanning-tree portfast
-        parents: interface FastEthernet0/2
+        parents: "interface GigabitEthernet0/{{ port_number }}"
+      loop: "{{ ports }}"
+      loop_control:
+        loop_var: port_number
+
+- name: Configure Internet-Switch interfaces for 802.1X
+  hosts: Internet-Switch
+  gather_facts: no
+
+  vars:
+    ports: "{{ range(5,11) | list }}"
+
+  tasks:
+    - name: Configure interface GigabitEthernet1/0/5-10
+      cisco.ios.ios_config:
+        lines:
+          - switchport mode access
+          - authentication port-control auto
+          - dot1x pae authenticator
+          - spanning-tree portfast
+        parents: "interface GigabitEthernet1/0/{{ port_number }}"
+      loop: "{{ ports }}"
+      loop_control:
+        loop_var: port_number
