@@ -1,50 +1,56 @@
 # Ansible 802.1X Lab
 
-This project automates the configuration of **802.1X Network Access Control (NAC)** on Cisco switches using **Ansible**.  
-It was developed as part of a hands-on lab to gain practical experience with **network automation**, **AAA security**, and **RADIUS integration** (via pfSense as the RADIUS server).
+This project uses **Ansible** to automate **802.1X network access control** on Cisco switches.  
+I built this lab to get hands-on experience with **network automation**, **AAA**, and **RADIUS-based authentication**, using **pfSense** as the RADIUS server.
+
+The main goal was to understand how 802.1X is configured on switches and how automation makes managing secure networks easier and more consistent.
 
 ---
 
-## Features
-- Removes existing **port-security** configurations
-- Configures **AAA authentication and authorization** for 802.1X
-- Applies **802.1X port-based authentication** on selected interfaces
-- Integrates Cisco IOS devices with a **RADIUS server** (auth-port 1812, acct-port 1813)
-- Supports **spanning-tree portfast** for faster port initialization
+## What This Lab Does
+- Removes existing **port-security** settings
+- Configures **AAA authentication and authorization**
+- Enables **802.1X (dot1x)** on switch interfaces
+- Integrates Cisco IOS switches with a **RADIUS server**
+- Applies **spanning-tree portfast** where appropriate
 
 ---
 
-## Skills & Tools Demonstrated
-- **Ansible Automation**: Writing playbooks and managing network configs  
-- **Cisco IOS Networking**: Switch configuration, AAA, and dot1x setup  
-- **RADIUS Authentication**: Centralized identity and access control  
-- **Network Security**: Implementing NAC to secure switch ports  
-- **Version Control**: Using Git/GitHub for project tracking  
+## Skills & Tools Used
+- **Ansible** for automating switch configurations  
+- **Cisco IOS** for AAA and 802.1X setup  
+- **RADIUS** for centralized authentication  
+- **Network security** concepts related to NAC  
+- **Git and GitHub** for version control and documentation  
 
 ---
 
-## Learning Outcomes
-This project simulates how enterprises secure access at the switch port level using **802.1X and RADIUS**.  
-It strengthened my ability to:  
-- Automate repetitive tasks with Ansible  
-- Integrate Cisco switches with external authentication systems  
-- Apply real-world security practices (NAC) in a lab environment  
-- Use GitHub for professional project documentation and version control  
+## What I Learned
+This lab reflects how organizations control access at the **switch port level** using 802.1X and RADIUS.  
+Through this project, I improved my ability to:
+- Automate repetitive network configuration tasks
+- Configure Cisco switches for AAA and 802.1X
+- Integrate network devices with external authentication services
+- Organize and document technical projects using GitHub
 
 ---
 
-## Files
-- `1X.yml` → Main playbook for removing port-security and enabling 802.1X  
-- `test.yml` → Secondary playbook for testing configs  
-- `hosts.yml` → Inventory file for target switches  
-- `ansible.cfg` → Ansible configuration file  
-- `.gitignore` → Ensures only relevant files are tracked  
-- `README.md` → Project documentation (this file)  
+## Project Structure
+
+```
+ansible/
+├── ansible.cfg
+└── inventory/
+ └── hosts.yml
+└── playbooks/
+ └── 1X.yml
+ └── test.yml
+```
 
 ---
 
-## How to Run
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/khaliddagian/ANSIBLE-LAB.git
-   cd ANSIBLE-LAB
+## File Overview
+- `1X.yml` – Main playbook that removes port-security and enables 802.1X  
+- `test.yml` – Playbook used for testing and validation  
+- `hosts.yml` – Inventory file for target switches  
+- `ansible.cfg` – Ansible configuration settings  
